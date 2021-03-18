@@ -1,4 +1,4 @@
-#### HOME PAGE
+# Library Management Software
 
 1.BOOKS from 
    i.add,edit,delete
@@ -11,5 +11,5 @@
 
 ########
 1. import my sql
-2.fetch from database $ set to table
+2. fetch from database $ set to table
 
