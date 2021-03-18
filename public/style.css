@@ -1,0 +1,56 @@
+@import url("https://rsms.me/raster/raster2.css?v=20");
+@import url("//cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css");
+
+/* Box model reset */
+html {
+    box-sizing: border-box;
+}
+
+*,
+*:before,
+*:after {
+    box-sizing: inherit;
+}
+
+/* FORM ELEMENTS */
+input,
+select,
+button {
+    appearance: none;
+    outline: 0;
+    box-shadow: none;
+    background-color: #fff;
+    border: 1px solid #dadada;
+    border-radius: 5px;
+    font-size: var(--h3-size);
+    padding: 0.7em 1.2em;
+    width: 100%;
+    margin-bottom: calc(var(--lineHeight) * 1.5);
+}
+
+input:hover,
+input:focus {
+    border-color: #444;
+}
+
+input[type='submit'],
+input[type='button'],
+button {
+    width: auto;
+    background: #000;
+    border-color: #000;
+    color: #fff;
+    margin: 1.5rem 0;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+input[type='button']:hover,
+input[type='button']:focus,
+input[type='submit']:hover,
+input[type='submit']:focus,
+button:hover,
+button:focus {
+    background: #fff;
+    color: #000;
+}
