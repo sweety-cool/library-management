@@ -12,7 +12,151 @@
 </head>
 
 <body>
+    <div>
+        <h2>Student Table</h2>
+        <br>
+        <table id="studentTable"></table>
+
+        <br>
+        <br>
+        <hr>
+    </div>
+
+    <div>
+        <h2>Book Table</h2>
+        <br>
+        <table id="booksTable">Book Table</table>
+        <br>
+        <br>
+        <hr>
+    </div>
+
+    <br>
+
+    <div>
+        <input type="text" id="bookId" placeholder="Book ID">
+        <input type="text" id="studentId" placeholder="Student ID">
+        <button onclick="issueBook()">ISSUE BOOKS</button>
+    </div>
+
+    <br><br>
+
+    <div>
+        <h2>Borrow Table</h2>
+        <br>
+        <table id="borrowTable"></table>
+    </div>
+
+    <br>
+    <br>
+    <hr>
 
 </body>
+<script>
+
+    let studentTable;
+    function getstudentTable() {
+
+        // Fetch / GET the list of data as JSON
+        fetch('/api/student/list').then(r => r.json())
+            .then(data => {
+
+                // If studentTable already exists then destroy first
+                if (studentTable) studentTable.destroy();
+
+                // create new data table and store it in the variable.. for later destruction
+                studentTable = $('#studentTable').DataTable({
+                    data,
+                    columns: [
+                        { data: 'student_id', title: "Student ID" },
+                        { data: 'student_name', title: "Student Name" }
+                    ]
+                });
+
+            });
+
+        // 
+    }
+    getstudentTable();
+
+
+    let booksTable;
+    function getbooksTable() {
+
+        // Fetch / GET the list of data as JSON
+        fetch('/api/book/list').then(r => r.json())
+            .then(data => {
+
+                // If booksTable already exists then destroy first
+                if (booksTable) booksTable.destroy();
+
+                // create new data table and store it in the variable.. for later destruction
+                booksTable = $('#booksTable').DataTable({
+                    data,
+                    columns: [
+                        { data: 'book_id', title: "ID" },
+                        { data: 'book_name', title: "Book Name" },
+                        { data: 'author_name', title: "Author Name" }
+                    ]
+                });
+
+            });
+
+        // 
+    }
+    getbooksTable();
+
+
+    let borrowTable;
+    function getBorrowTable() {
+
+        // Fetch / GET the list of data as JSON
+        fetch('/api/borrow/list').then(r => r.json())
+            .then(data => {
+
+                // If borrowTable already exists then destroy first
+                if (borrowTable) borrowTable.destroy();
+
+                // create new data table and store it in the variable.. for later destruction
+                borrowTable = $('#borrowTable').DataTable({
+                    data,
+                    columns: [
+                        { data: 'student_id', title: "Student Id" },
+                        { data: 'student_name', title: "Student Name" },
+                        { data: 'book_id', title: "Book Id" },
+                        { data: 'book_name', title: "Book Name" },
+                        { data: 'author_name', title: "Author Name" },
+                        { data: 'issue_date', title: "Issue Date " },
+                        { data: 'return_date', title: "Return Date" }
+                    ]
+                });
+
+            });
+
+        // 
+    }
+    getBorrowTable();
+
+
+    function issueBook() {
+
+        let data = {
+            studentId: $('#studentId').val(),
+            bookId: $('#bookId').val()
+        }
+
+        fetch('/api/borrow/add', {
+            method: "POST",
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify(data)
+        }).then(r => r.text())
+            .then(data => {
+                getBorrowTable();
+                alert(data);
+            })
+    }
+
+
+</script>
 
 </html>

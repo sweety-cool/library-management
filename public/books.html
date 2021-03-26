@@ -8,7 +8,7 @@
     <title>BOOKS FORM</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
-    <script src="//cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
 
 </head>
 
@@ -16,6 +16,9 @@
     <input type="text" placeholder="book-name" id="book-name">
     <input type="text" placeholder="author-name" id="author-name">
     <button onclick="add()">ADD</button>
+
+    <br>
+    <table id="booksTable"></table>
 </body>
 
 <script>
@@ -32,10 +35,38 @@
             body: JSON.stringify(data)
         }).then(r => r.text())
             .then(data => {
+                getTable();
                 alert(data);
             })
     }
 
+    let booksTable;
+
+    function getTable() {
+
+        // Fetch / GET the list of data as JSON
+        fetch('/api/book/list').then(r => r.json())
+            .then(data => {
+
+                // If booksTable already exists then destroy first
+                if (booksTable) booksTable.destroy();
+
+                // create new data table and store it in the variable.. for later destruction
+                booksTable = $('#booksTable').DataTable({
+                    data,
+                    columns: [
+                        { data: 'book_id', title: "ID" },
+                        { data: 'book_name', title: "Book Name" },
+                        { data: 'author_name', title: "Author Name" }
+                    ]
+                });
+
+            });
+
+        // 
+    }
+
+    getTable();
 </script>
 
 </html>

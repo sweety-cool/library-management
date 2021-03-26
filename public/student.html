@@ -13,7 +13,56 @@
 </head>
 
 <body>
+    <input type="text" placeholder="Student Name" id="student-name">
+    <button onclick="add()">ADD</button>
+
+    <br>
+    <table id="studentTable"></table>
 
 </body>
+<script>
+    function add() {
+        let data = {
+            studentName: $('#student-name').val()
+        }
+        fetch('/api/student/add', {
+            method: "POST",
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify(data)
+        }).then(r => r.text())
+            .then(data => {
+                getTable();
+                alert(data);
+            })
+    }
+
+
+    let studentTable;
+
+    function getTable() {
+
+        // Fetch / GET the list of data as JSON
+        fetch('/api/student/list').then(r => r.json())
+            .then(data => {
+
+                // If studentTable already exists then destroy first
+                if (studentTable) studentTable.destroy();
+
+                // create new data table and store it in the variable.. for later destruction
+                studentTable = $('#studentTable').DataTable({
+                    data,
+                    columns: [
+                        { data: 'student_id', title: "Student ID" },
+                        { data: 'student_name', title: "Student Name" }
+                    ]
+                });
+
+            });
+
+        // 
+    }
+
+    getTable();
+</script>
 
 </html>

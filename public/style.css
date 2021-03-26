@@ -54,3 +54,21 @@ button:focus {
     background: #fff;
     color: #000;
 }
+
+
+/* Fix Table */
+table td,
+table th {
+    background-size: auto !important;
+}
+
+th {
+    background: #1192e8;
+}
+
+.studentTable,
+.booksTable,
+.borrowTable {
+    text-align: center;
+    background-color: rgb(248, 218, 218);
+}
