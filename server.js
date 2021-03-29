@@ -1,11 +1,52 @@
 const express = require('express');
+const express_session = require('express-session')
 const DB = require('./database');
+
 const app = express();
+
+// Required Variables
+const secret = Math.random().toString().substr(2);
 const port = 5000;
 
+app.use(express_session({ secret, saveUninitialized: true }));
 app.use(express.json());
+app.use(express.static('public'));
 
-app.use(express.static('public'))
+
+// Auth
+
+// Login API
+app.all('/api/login', async (req, res) => {
+
+    if (req.body.user && req.body.pass) {
+
+        // Query from database, if user exists
+        const USER = (await DB.query(`SELECT * FROM users WHERE user_name = '${req.body.user}'`))[0];
+        // splicing array of objects cz only one item in array 
+
+        // Check if User exists && if password matched
+        if (USER && USER.user_pass == req.body.pass) {
+            req.session.auth = true;
+            res.send('1');
+        }
+        else res.send("Invalid Credetials, Check username / password");
+
+    } else res.send(`INVALID DATA`);
+
+});
+
+app.all('/api/logout', (req, res) => {
+    req.session.auth = false;
+    res.redirect('/login.html');
+});
+
+// AUTH MIDDLEWARE
+app.use((req, res, next) => {
+    if (req.session.auth) next();
+    else res.redirect('/login.html');
+});
+
+app.use(express.static('protected'));
 
 // BOOK ################################
 app.all('/api/book/add', async (req, res) => {
@@ -31,7 +72,7 @@ app.all('/api/book/list', async (req, res) => {
 app.all('/api/student/add', async (req, res) => {
 
     if (req.body.studentName) {
-        await DB.query(`INSERT INTO book (student_name) VALUES ('${req.body.studentName}')`);
+        await DB.query(`INSERT INTO student (student_name) VALUES ('${req.body.studentName}')`);
         res.send(`ADDED SUCCESFULLY`);
     } else res.send(`INVALID DATA`);
 

@@ -18,7 +18,10 @@
     <button onclick="add()">ADD</button>
 
     <br>
-    <table id="booksTable"></table>
+    <table id="booksTable">
+    </table>
+
+
 </body>
 
 <script>
@@ -57,16 +60,26 @@
                     columns: [
                         { data: 'book_id', title: "ID" },
                         { data: 'book_name', title: "Book Name" },
-                        { data: 'author_name', title: "Author Name" }
+                        { data: 'author_name', title: "Author Name" },
+                        {
+                            defaultContent: '<b class="table-button">↗</b>', title: 'Edit'
+                        },
                     ]
+                });
+
+                // Register Edit handlers on each row (b) button
+                $("#booksTable tbody").on('click', 'b', function () {
+                    const rowData = booksTable.row($(this).parents('tr')).data();
+                    console.log(rowData);
                 });
 
             });
 
-        // 
+
     }
 
     getTable();
+
 </script>
 
 </html>

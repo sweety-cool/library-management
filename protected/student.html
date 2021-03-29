@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BOOKS FORM</title>
+    <title> Manage Students</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
     <script src="//cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
@@ -17,6 +17,7 @@
     <button onclick="add()">ADD</button>
 
     <br>
+    <a class="editor-create">+ Create new record</a>
     <table id="studentTable"></table>
 
 </body>
@@ -36,7 +37,7 @@
             })
     }
 
-
+    let editor;
     let studentTable;
 
     function getTable() {
@@ -53,11 +54,33 @@
                     data,
                     columns: [
                         { data: 'student_id', title: "Student ID" },
-                        { data: 'student_name', title: "Student Name" }
+                        { data: 'student_name', title: "Student Name" },
+                        // {
+                        //     "data": null,
+                        //     "bSortable": false,
+                        //     "mRender": function (o) {
+                        //         return '<a href=#/' + o.bookid + '>' + 'Edit' + '</a>' + "       " +
+                        //             '<a href=#/' + o.bookid + '>' + 'Delete' + '</a>';
+
+
+                        //     }
+
+                        // }
                     ]
                 });
 
+
             });
+
+
+        $('#studentTable').on('click', 'td.editor-edit', function (e) {
+            e.preventDefault();
+
+            editor.edit($(this).closest('tr'), {
+                title: 'Edit record',
+                buttons: 'Update'
+            });
+        });
 
         // 
     }
